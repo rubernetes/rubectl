@@ -1,2 +1,2 @@
 # rubectl
-A cli to facilitate and automate building Kubernetes controllers in Ruby
+A cli to facilitate and automate building Kubernetes operators in Ruby
