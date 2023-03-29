@@ -58,16 +58,16 @@ if options[:sleepTimer]
 end
 operator_options = operator_options.to_json.gsub('"namespace":', " namespace: ").gsub('"sleepTimer":', " sleepTimer: ").gsub('}', " }")
 
-
-
-
 OperatorGenrator.new(options, operator_options).genrate
-
 GemGenerator.new.generate
-
 ChartsGenerator.new(options).generate
-
 GithubActionsGenerator.new.generate
+
+puts '=' * 100
+puts "Scaffold for #{options[:name]} created."
+puts "Note: inorder to use the github action, you need to add REPO_ACCESS_TOKEN to your repo secrets."
+puts '=' * 100
+
 
 
 

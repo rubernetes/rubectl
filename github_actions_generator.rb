@@ -41,7 +41,7 @@ class GithubActionsGenerator
                     
                             - name: Login to Container Registry
                               id: login-to-gh-cr
-                              run: docker login -u ${{ env.REPO_NAME }} -p ${{ env.REPO_NAME }} ${{ env.CONTAINER_REGISTRY_URL }}
+                              run: docker login -u ${{ secrets.REPO_ACCESS_TOKEN }} -p ${{ secrets.REPO_ACCESS_TOKEN }} ${{ env.CONTAINER_REGISTRY_URL }}
                     
                             - name: build image
                               id: build-image
