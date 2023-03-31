@@ -1,0 +1,40 @@
+{{- if .Values.crds.install }}
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    {{- if .Values.crds.keep }}
+    "helm.sh/resource-policy": keep
+    {{- end }}
+    {{- with .Values.crds.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "helm-<%= @type %>.labels" . | nindent 4 }}
+  name: {{ .Values.crds.name }}<%= !options[:namespace].nil? ? "\n\tnamespace: {{ .Values.namespace }}" : '' %>
+spec:
+  group: {{ .Values.crds.group }}
+  names:
+    kind: <%= name.capitalize %>
+    listKind: <%= name.capitalize %>List
+    plural: <%= crd_plural.downcase %>
+    shortNames:
+    - "<%= crd_short %>"
+    - "<%= crd_short %>s"
+    singular: "<%= name.downcase %>"
+  scope: <%= !options[:namespace].nil? ? "Namespaced" : 'Cluster' %>
+  versions:
+  - name: "<%= crd_version.downcase %>"
+    schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                {{- with .Values.crds.properties }}
+                {{- toYaml . | nindent 16 }}
+                {{- end }}
+    served: true
+    storage: true
+{{- end }}

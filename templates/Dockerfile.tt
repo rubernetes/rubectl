@@ -1,0 +1,6 @@
+FROM ruby:3.0
+WORKDIR /usr/src/app
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+COPY . .
+RUN chmod 777 ./<%= name %>_controller.rb

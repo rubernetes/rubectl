@@ -1,0 +1,48 @@
+# frozen_string_literal: true
+
+require 'rubernetes'
+
+# Create a new operator that handlle the events callbacks
+# @param crd_group [string] ApiGroup from crd
+# @param crd_version [string] ApiVersion from crd
+# @param crd_plural [string] Name (plural) from crd
+# @param options [Hash] Additional options
+class <%= name.capitalize %>Controller < Rubernetes::Operator
+  def initialize(crd_group, crd_version, crd_plural, options = {})
+    super(crd_group, crd_version, crd_plural, options)
+  end
+
+  # Event callback when a <%= name.downcase %> is added, you can add your cutom logic
+  # here that will be triggered when a <%= name.downcase %> is added
+  # @param event [Hash] Event from the watcher that contains all information about
+  # the <%= name.downcase %> that you will need
+  def added(event)
+    @logger.info 'new <%= name.downcase %> has been added on the cluster'
+    # custom logic to handle the creation of a <%= name.downcase %>
+
+    # example of how to set and get the status of a <%= name.downcase %>
+    set_status(event, { foo: 'foo', bar: 'bar' })
+    # @status = get_status(event)
+  end
+
+  # Event callback when a <%= name.downcase %> is modified, you can add
+  # your cutom logic here that will be triggered when a <%= name.downcase %> is modified
+  # @param event [Hash] Event from the watcher that contains all information about
+  # the <%= name.downcase %> that you will need
+  def modified(event)
+    @logger.info 'a <%= name.downcase %> has been modified on the cluster'
+    # custom logic to handle the modification of a <%= name.downcase %>
+
+    @logger.info event
+  end
+
+  # Event callback when a <%= name.downcase %> is deleted, you can add
+  # your cutom logic here that will be triggered when a <%= name.downcase %> is deleted
+  # @param event [Hash] Event from the watcher that contains all information about
+  # the <%= name.downcase %> that you will need
+  def deleted(_event)
+    @logger.info 'a <%= name.downcase %> has been deleted from the cluster'
+    # custom logic to handle the deletion of a <%= name.downcase %>
+  end
+end
+<%= name.capitalize %>Controller.new('<%= crd_api_group.downcase %>', '<%= crd_version.downcase %>', '<%= crd_plural.downcase %>', <%= @operator_options %>).run

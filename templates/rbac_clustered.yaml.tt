@@ -1,0 +1,26 @@
+{{- if .Values.rbac.enabled }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "helm-clustered.fullname" . }}
+rules:
+- apiGroups:
+  - {{ .Values.crds.group }}
+  resources:
+  - {{ index .Values.rbac.resources 0 }}
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "helm-clustered.fullname" . }}-binding
+roleRef: # points to the ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "helm-clustered.fullname" . }} # name of ClusterRole
+subjects: # points to the ServiceAccount
+- kind: ServiceAccount
+  name: {{ include "helm-clustered.serviceAccountName" . }}
+  namespace: default # ns of service account
+{{- end }}
