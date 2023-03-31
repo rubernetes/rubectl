@@ -9,7 +9,7 @@ This script requires [Ruby](https://www.ruby-lang.org/en/downloads/) to be insta
 
 ## Usage
 
-Run the `scaffold.rb` script with the following options:
+Run the `rubctl.rb` script with the following options:
 
 - -n, --name NAME: The name of the scaffold (required)
 - -p, --plural NAMES: The name (plural) from crd (required)
